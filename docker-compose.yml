@@ -1,0 +1,42 @@
+version: "3.7"
+
+services:
+  frontend:
+    container_name: store-frontend2
+    build:
+      context: ./frontend2
+      dockerfile: Dockerfile
+    ports:
+      - 8080:8080
+    volumes:
+      - ./frontend2:/frontend
+    command: >
+      sh -c "npm run serve"
+  backend:
+    container_name: store-backend
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    ports:
+      - 3000:3000
+    environment:
+      - MONGO_USERNAME=benning
+      - MONGO_PASSWORD=benning55
+      - MONGO_HOSTNAME=mongodb
+      - MONGO_PORT=27017
+      - MONGO_DB=main_db
+    volumes:
+      - ./backend:/usr/src/app
+    links:
+      - mongodb
+  mongodb:
+    container_name: store-mongodb
+    image: mongo:4.2.12
+    ports:
+      - 27017:27017
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=benning
+      - MONGO_INITDB_ROOT_PASSWORD=benning55
+      - MONGO_INITDB_DATABASE=main_db
+    volumes:
+      - ./docker_volumes/db:/data/db
