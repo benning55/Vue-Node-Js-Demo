@@ -24,12 +24,11 @@ const state = () => ({
    
   const actions = {
     signOut({commit}) {
-        console.log("benning")
+        commit("home/clearCart", null, { root: true })
         commit('removeToken')
         return true
     },
     async login({commit},payload) {
-        console.log(payload);
         const header = {
             'Content-Type': 'application/json',
         }

@@ -13,7 +13,7 @@ async function checkEmailAndPassword(req, res, next) {
 async function checkSignUpReq(req, res, next) {
     if (!req.body.email || !req.body.password || !req.body.name || !req.file) {
         return res.status(400).send({
-            message: `Please send request with email, password, name and image field.`
+            message: `Please send request with email, password, name and file field.`
         });
     }
     next()

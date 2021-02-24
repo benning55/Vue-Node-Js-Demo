@@ -22,7 +22,12 @@
         <li v-if="getterLoginStatus !== 'Success'">
           <router-link to="/signup">Sign Up</router-link>
         </li>
-        <li v-else @click="atSignOut">Sign Out</li>
+        <li v-if="getterLoginStatus === 'Success'" @click="atSignOut">Sign Out</li>
+        <li v-if="getterLoginStatus === 'Success'">
+          <div class="w-full relative" :class="{'changeSize': isActive}">
+            <span class="cart-count">{{ getterGetCart.length }}</span><img src="./assets/shopping-cart.svg" class="w-8" alt="">
+          </div>
+        </li>
       </ul>
     </div>
   </div>
@@ -44,7 +49,10 @@
     },
     computed: {
       ...mapGetters('auth', {
-        getterLoginStatus: 'getLoginStatus',
+        getterLoginStatus: 'getLoginStatus'
+      }),
+      ...mapGetters('home', {
+        getterGetCart: 'getCart' 
       })
     },
     methods: {
@@ -52,15 +60,10 @@
         actionSignOut: 'signOut'
       }),
       atToggle() {
-        console.log("test2")
         this.isActive = !this.isActive
       },
       async atSignOut() {
-        console.log("signOut")
-        let result = await this.actionSignOut()
-        if (result === true) {
-          console.log("success")
-        }
+        await this.actionSignOut()
       }
     }
   }
@@ -70,14 +73,32 @@
   .action {
     display: block;
     width: 100%;
-    line-height: 3rem;
   }
 
   .action li {
+    line-height: 3rem;
     border-bottom: 2px solid black;
   }
 
   .changedirection {
     flex-direction: column;
+  }
+
+  .changeSize {
+    width: 40px;
+    margin: 0.5rem 0;
+  }
+
+  .cart-count {
+    font-size: 0.75rem;
+    background-color: red;
+    width: 1rem;
+    text-align: center;
+    color: #fff;
+    z-index: 2;
+    border-radius: 3px;
+    position: absolute;
+    line-height: 1.1rem;
+    right: 0px;
   }
 </style>
